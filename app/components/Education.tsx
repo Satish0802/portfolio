@@ -1,70 +1,13 @@
 "use client";
-
 import { useState } from "react";
-
-interface EducationEntry {
-  degree: string;
-  institution: string;
-  period: string;
-  url: string;
-  note?: string;
+interface EducationEntry{degree:string;institution:string;period:string;url:string;note?:string}
+const educationData:EducationEntry[]=[{degree:"Bachelor of Computer Application",institution:"Lumbini Academic College",period:"2020 – 2026",url:"https://laf.edu.np/",note:"BCA · MERN focus"}];
+function EducationRow({entry}:{entry:EducationEntry}){
+ const [show,setShow]=useState(false);
+ return <div className="group relative py-3" onMouseEnter={()=>setShow(true)} onMouseLeave={()=>setShow(false)}>
+  <div className="flex justify-between gap-4"><span className="text-sm">{entry.degree}</span><span className="shrink-0 font-mono text-[10px] text-muted">{entry.period}</span></div>
+  <span tabIndex={0} onFocus={()=>setShow(true)} onBlur={()=>setShow(false)} className="mt-2 inline-block border-b border-dotted border-muted font-mono text-[10px] text-accent">{entry.institution}</span>
+  <div className={`absolute left-0 top-full z-20 border border-[var(--line)] bg-surface p-3 text-[10px] shadow-xl transition-opacity ${show?"opacity-100":"pointer-events-none opacity-0"}`}><p className="text-muted">{entry.note}</p><a href={entry.url} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block text-accent">visit site ↗</a></div>
+ </div>
 }
-
-const educationData: EducationEntry[] = [
-  {
-    degree: "Bachelor of Computer Application",
-    institution: "Your College Name",
-    period: "2022 – 2026",
-    url: "https://your-college-official-site.edu",
-    note: "BCA · MERN focus",
-  },
-  // add more entries here
-];
-
-function EducationRow({ entry }: { entry: EducationEntry }) {
-  const [show, setShow] = useState(false);
-
-  return (
-    <div className="flex flex-col gap-1 py-3">
-      <span className="text-sm text-muted font-mono">{entry.period}</span>
-      <span className="text-base text-foreground">{entry.degree}</span>
-
-      <span
-        className="relative inline-block w-fit cursor-pointer border-b border-dotted border-muted text-accent"
-        onMouseEnter={() => setShow(true)}
-        onMouseLeave={() => setShow(false)}
-        onFocus={() => setShow(true)}
-        onBlur={() => setShow(false)}
-        tabIndex={0}
-      >
-        {entry.institution}
-
-        <div
-          className={`absolute left-0 top-full z-10 mt-2 w-max max-w-[240px] rounded-md bg-surface px-3 py-2 text-xs text-foreground shadow-lg transition-opacity duration-150 ${
-            show ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-          }`}
-        >
-          {entry.note && <p className="mb-1 text-muted">{entry.note}</p>}
-          <a
-            href={entry.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-accent hover:underline"
-          >
-            visit site ↗
-          </a>
-        </div>
-      </span>
-    </div>
-  );
-}
-
-export default function Education() {
-  return (
-    <section className="flex flex-col divide-y divide-muted/20">
-      {educationData.map((entry) => (
-        <EducationRow key={entry.institution} entry={entry} />
-      ))}
-    </section>
-  );
-}
+export default function Education(){return <section className="divide-y divide-[var(--line)]">{educationData.map(e=><EducationRow key={e.institution} entry={e}/>)}</section>}
